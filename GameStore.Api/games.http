@@ -2,11 +2,22 @@ GET http://localhost:5047/games
 
 ###
 
-GET http://localhost:5047/games/1
+GET http://localhost:5047/games/2
 
 ###
 
 POST http://localhost:5047/games/
+Content-Type: application/json
+
+{
+    "name": "Minecraft",
+    "genre": "Adventure",
+    "price": 19.89,
+    "releaseDate": "2004-09-02"
+}
+
+###
+PUT http://localhost:5047/games/1
 Content-Type: application/json
 
 {

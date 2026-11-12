@@ -1,3 +1,4 @@
+using GameStore.Api;
 using GameStore.Api.DTOs;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -26,7 +27,7 @@ List<GameDTO> games = [
 // GET /games
 app.MapGet("/games", () => games);
 
-// GET /games/$id
+// GET /games/{id}
 app.MapGet("/games/{id}", (int id) => games.Find(g => g.Id == id))
 .WithName(GetGameEndpointName);
 
@@ -34,14 +35,33 @@ app.MapGet("/games/{id}", (int id) => games.Find(g => g.Id == id))
 app.MapPost("/games", (CreateGameDTOs newGame) =>
 {
     GameDTO game = new (
-        games.Count + 1,
+        games.Count,
         newGame.Name,
         newGame.Genre,
         newGame.Price,
         newGame.ReleaseDate
     );
 
+    games.Add(game);
+
     return Results.CreatedAtRoute(GetGameEndpointName,new {id = game.Id} ,game);
 });
+
+// PUT /games/{id}
+app.MapPut("games/{id}", (int id, UpdateGameDTOs updatedGame) =>
+{
+    var index = games.FindIndex(g => g.Id == id);
+
+    games[index] = new (
+        id,
+        updatedGame.Name,
+        updatedGame.Genre,
+        updatedGame.Price,
+        updatedGame.ReleaseDate
+    );
+
+    return Results.NoContent();
+});
+
 
 app.Run();
