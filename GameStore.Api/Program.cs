@@ -34,8 +34,10 @@ app.MapGet("/games/{id}", (int id) => games.Find(g => g.Id == id))
 // POST /games
 app.MapPost("/games", (CreateGameDTOs newGame) =>
 {
+    var newId = games[games.Count-1].Id + 1;
+
     GameDTO game = new (
-        games.Count,
+        newId,
         newGame.Name,
         newGame.Genre,
         newGame.Price,
@@ -59,6 +61,15 @@ app.MapPut("games/{id}", (int id, UpdateGameDTOs updatedGame) =>
         updatedGame.Price,
         updatedGame.ReleaseDate
     );
+
+    return Results.NoContent();
+});
+
+// DELETE /games/{id}
+
+app.MapDelete("/games/{id}",(int id) =>
+{
+    games.RemoveAll(g => g.Id == id);
 
     return Results.NoContent();
 });
