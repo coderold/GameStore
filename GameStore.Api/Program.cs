@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddValidation();
+
 var app = builder.Build();
 
 app.MapGameEndpoint();
